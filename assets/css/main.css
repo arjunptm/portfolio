@@ -3330,7 +3330,7 @@ input, select, textarea {
 		max-width: 100%;
 		opacity: 1;
 		padding: 2em;
-		width: 70em;
+		width: 60em;
 	}
 
 		body.is-menu-visible #wrapper {
