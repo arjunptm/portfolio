@@ -27,14 +27,18 @@ pre[class*="language-"] {
 	-moz-hyphens: none;
 	-ms-hyphens: none;
 	hyphens: none;
+	width: fit-content;
+}
 
+code[class*="language-"]{
+	overflow-x: auto;
+	overflow-y: auto;
 }
 
 /* Code blocks */
 pre[class*="language-"] {
 	padding: 1em;
 	margin: .5em 0;
-	overflow: auto;
 }
 
 :not(pre) > code[class*="language-"],
