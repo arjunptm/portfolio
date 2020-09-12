@@ -57,6 +57,19 @@
     position:absolute;
     
 }
+.code-snippet-wrapper{
+  padding-bottom:56.25%;
+  position:relative;
+  height:0;
+}
+.code-snippet{
+  left:0;
+  top:0;
+  height:100%;
+  width:100%;
+  position:absolute;
+  overflow-y: auto;
+}
 
 .links li.active {
   color: #2ebaae !important;

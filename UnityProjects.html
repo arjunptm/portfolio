@@ -11,6 +11,8 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
 		<link rel="stylesheet" href="assets/css/tabswitching.css">
+		<link rel="stylesheet" href="assets/css/prism.css">
+
 	</head>
 	<body class="single is-preload">
 		<!-- Wrapper -->
@@ -53,15 +55,80 @@
 							<span class="image featured" title="Click to enlarge image."><a href="images/SmartBT.png" target="_blank"><img src="images/SmartBT.png" alt="" /></a></span>
 						</div>
 						<div id="MAPSsmartSnip" class="customtabcontent">
-							<!-- <iframe src="url" title="description"> -->
-								<div class="video-responsive"><iframe src="Code Snippets/IsTargetCloseSmart.html" title="Iframe Example"></iframe></div>
+							<div class="code-snippet-wrapper">
+								<div class="code-snippet">
+<pre data-lang="csharp">
+<code class="language-csharp">using Pada1.BBCore.Tasks;
+using Pada1.BBCore;
+using UnityEngine;
 
+namespace BBUnity.Actions
+{
+	/// &lt;summary&gt;
+	/// It is an action to find the closest game object with a given label.
+	/// &lt;/summary&gt;
+	[Action("MyActions/IsTargetCloseSmart")]
+	[Help("Returns true if target is closer than given distance.")]
+	public class IsTargetCloseSmart : GOAction
+	{
+		///&lt;value&gt;Input Target Parameter to to check the distance.&lt;/value&gt;
+		[InParam("target")]
+		[Help("Target to check the distance")]
+		public GameObject target;
+
+		///&lt;value&gt;Input maximun distance Parameter to consider that the target is close.&lt;/value&gt;
+		[InParam("closeDistance")]
+		[Help("The maximun distance to consider that the target is close")]
+		public float closeDistance;
+
+		private bool completed;
+		/// &lt;summary&gt;Initialization Method of ClosestGameObjectWithTag.&lt;/summary&gt;
+		/// &lt;remarks&gt;Get all the GamesObject with that tag and check which is the closest one.&lt;/remarks&gt;
+		public override void OnStart()
+		{
+			if (target == null)
+			{
+				completed = false;
+			}
+			else
+			{
+				if ((gameObject.transform.position - target.transform.position).sqrMagnitude &lt; closeDistance * closeDistance)
+				{
+					completed = true;
+				}
+				else
+				{
+					completed = false;
+				}
+			}
+		}
+		/// &lt;summary&gt;Method of Update of ClosestGameObjectWithTag.&lt;/summary&gt;
+		/// &lt;remarks&gt;Complete the task.&lt;/remarks&gt;
+		public override TaskStatus OnUpdate()
+		{
+			if (completed)
+			{
+				//Debug.Log("Passed");
+				return TaskStatus.COMPLETED;
+			}
+			else
+			{
+				//Debug.Log("Failed");
+				return TaskStatus.FAILED;
+			}
+		}
+	}
+}
+</code>
+</pre>
+								</div>	
+							</div>
 						</div>
 						</div>
 						<div class="customtab">
-							<button class="customtablinks defaultOp" onclick="openCity(event, 'MAPSvideo', 'MAPS')" id="defaultOpen1">Gameplay</button>
+							<button class="customtablinks" onclick="openCity(event, 'MAPSvideo', 'MAPS')" id="defaultOpen1">Gameplay</button>
 							<button class="customtablinks" onclick="openCity(event, 'MAPSsmartBT', 'MAPS')">Smart NPC's Behaviour Tree</button>
-							<button class="customtablinks" onclick="openCity(event, 'MAPSsmartSnip', 'MAPS')">BT Action - C# Snippet</button>
+							<button class="customtablinks defaultOp" onclick="openCity(event, 'MAPSsmartSnip', 'MAPS')">BT Action - C# Snippet</button>
 						</div>
 					</div>
 					
@@ -130,5 +197,7 @@
 		<script src="assets/js/util.js"></script>
 		<script src="assets/js/main.js"></script>
 		<script src="assets/js/tabswitching.js"></script>
+		<script src="assets/js/prism.js"></script>
+
 	</body>
 </html>
