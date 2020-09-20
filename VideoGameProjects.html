@@ -1,0 +1,206 @@
+<!DOCTYPE HTML>
+<!--
+    Future Imperfect by HTML5 UP
+    html5up.net | @ajlkn
+    Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+    <head>
+        <title>Arjun Madhusudan - Video Game Projects</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+        <link rel="stylesheet" href="assets/css/main.css" />
+        <link rel="stylesheet" href="assets/css/tabswitching.css">
+        <link rel="stylesheet" href="assets/css/prism.css">
+        <link rel="stylesheet" type="text/css" href="assets/css/fullscreen.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    </head>
+    <body class="single is-preload">
+        <!-- Wrapper -->
+        <div id="wrapper">
+            <!-- Header -->
+            <header id="header">
+                <h1><a href="index.html">Arjun Madhusudan</a></h1>
+                <nav class="links">
+                    <ul>
+                        <li><a href="UnityProjects.html">Unity Projects</a></li>
+                        <li class="active"><a href="VideoGameProjects.html">Video Game Projects</a></li>
+                        <li><a href="Research.html">Research</a></li>
+                        <li><a href="WorkInProgess.html">Skills</a></li>
+                        <li><a href="AboutMe.html">About Me</a></li>
+                    </ul>
+                </nav>
+                <nav class="main">
+                    <ul>
+                        <li class="menu">
+                            <a class="fa-bars" href="#menu">Menu</a>
+                        </li>
+                    </ul>
+                </nav>
+            </header>
+            <!-- Menu -->
+            <section id="menu">
+                <!-- Links -->
+                <section>
+                    <ul class="links">
+                        <li><a href="UnityProjects.html">Unity Projects</a></li>
+                        <li class="active"><a href="VideoGameProjects.html">Video Game Projects</a></li>
+                        <li><a href="Research.html">Research</a></li>
+                        <li><a href="WorkInProgess.html">Skills</a></li>
+                        <li><a href="AboutMe.html">About Me</a></li>
+                    </ul>
+                </section>
+            </section>
+            
+            <!-- Main -->
+            <div id="main">
+                <!-- Post -->
+                <article class="post">
+                    <header>
+                        <div class="title">
+                            <h2>Snake 2.5D</h2>
+                            <p>A WebGL recreation of the classic Snake</p>
+                        </div>
+                    </header>
+                    
+                    <div class="projectdisplay" id="CGSnake">
+                        <div class="projectWrapper">
+                            
+                            <div id="CGSnakeDemo" class="customtabcontent">
+                                <span class="image featured"><img src="images/CGSnake.png" alt="" class="blur_image"/><a href="https://arjunptm.github.io/WebGL_Snake/" target="_blank"><button class="blur_image_btn">Click to try live demo</button></a>
+                            </span>
+                        </div>
+                        <div id="CGSnakeSnip" class="customtabcontent">
+                            <div class="code-snippet-wrapper">
+                                <div class="code-snippet">
+                                    <pre data-lang="csharp">
+                                        <code class="language-js">function setupShaders() {
+    // define fragment shader in essl using es6 template strings
+    var fShaderCode = `
+    precision mediump float;
+    uniform vec3 lightPos;
+    uniform vec3 lightCol;
+    uniform vec3 ambColor;
+    uniform vec3 difColor;
+    uniform vec3 spcColor;
+    uniform vec3 eyePos;
+    uniform float n;
+    uniform float lightModel;
+    varying vec3 normal;
+    varying vec3 vPos;
+    // varying vec3 fragColor;
+    void main(void) {
+        
+            vec3 blinnPhongColor = ambColor * lightCol;
+            blinnPhongColor += difColor * lightCol * (max(dot(normalize(normal),normalize((lightPos - vPos))),0.0));
+            blinnPhongColor += spcColor * lightCol * ( pow(max (dot (  normalize((lightPos + (eyePos - vPos)  )), normalize(normal)  ),0.0),n ));
+            gl_FragColor = vec4(blinnPhongColor, 1.0); // all fragments are white
+        
+    }
+    `;
+    // define vertex shader in essl using es6 template strings
+    var vShaderCode = `
+    attribute vec3 vertexPosition;
+    varying vec3 vPos;
+    attribute vec3 normalPosition;
+    varying vec3 normal;
+    uniform mat4 uModelMatrix; // the model matrix
+    uniform mat4 uViewMatrix;
+    uniform mat4 uProjMatrix;
+    void main(void) {
+        normal = normalPosition;
+        vPos = vertexPosition;
+        vec3 P = vec3(uModelMatrix * vec4(vertexPosition, 1.0));
+        gl_Position = uViewMatrix * vec4(P,1.0);
+        gl_Position = uProjMatrix * gl_Position;
+    }
+    `;
+    try {
+        // console.log("fragment shader: "+fShaderCode);
+        var fShader = gl.createShader(gl.FRAGMENT_SHADER); // create frag shader
+        gl.shaderSource(fShader, fShaderCode); // attach code to shader
+        gl.compileShader(fShader); // compile the code for gpu execution
+        // console.log("vertex shader: "+vShaderCode);
+        var vShader = gl.createShader(gl.VERTEX_SHADER); // create vertex shader
+        gl.shaderSource(vShader, vShaderCode); // attach code to shader
+        gl.compileShader(vShader); // compile the code for gpu execution
+        if (!gl.getShaderParameter(fShader, gl.COMPILE_STATUS)) { // bad frag shader compile
+            throw "error during fragment shader compile: " + gl.getShaderInfoLog(fShader);
+            gl.deleteShader(fShader);
+        } else if (!gl.getShaderParameter(vShader, gl.COMPILE_STATUS)) { // bad vertex shader compile
+            throw "error during vertex shader compile: " + gl.getShaderInfoLog(vShader);
+            gl.deleteShader(vShader);
+        } else { // no compile errors
+            var shaderProgram = gl.createProgram(); // create the single shader program
+            gl.attachShader(shaderProgram, fShader); // put frag shader in program
+            gl.attachShader(shaderProgram, vShader); // put vertex shader in program
+            gl.linkProgram(shaderProgram); // link program into gl context
+            if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) { // bad program link
+                throw "error during shader program linking: " + gl.getProgramInfoLog(shaderProgram);
+            } else { // no shader program link errors
+                gl.useProgram(shaderProgram); // activate shader program (frag and vert)
+                vertexPositionAttrib = // get pointer to vertex shader input
+                    gl.getAttribLocation(shaderProgram, "vertexPosition");
+                normAttrib = // get pointer to vertex shader input
+                    gl.getAttribLocation(shaderProgram, "normalPosition");
+                vertexColorAttrib = // get pointer to vertex shader input
+                    gl.getAttribLocation(shaderProgram, "vertexColor");
+                modelMatrixULoc = gl.getUniformLocation(shaderProgram, "uModelMatrix"); // ptr to mmat
+                viewMatrixULoc = gl.getUniformLocation(shaderProgram, "uViewMatrix");
+                projMatrixULoc = gl.getUniformLocation(shaderProgram, "uProjMatrix");
+                difColorULoc = gl.getUniformLocation(shaderProgram, "difColor");
+                ambColorULoc = gl.getUniformLocation(shaderProgram, "ambColor");
+                spcColorULoc = gl.getUniformLocation(shaderProgram, "spcColor");
+                lightPosULoc = gl.getUniformLocation(shaderProgram, "lightPos");
+                lightColULoc = gl.getUniformLocation(shaderProgram, "lightCol");
+                eyeULoc = gl.getUniformLocation(shaderProgram, "eyePos");
+                nULoc = gl.getUniformLocation(shaderProgram, "n");
+                // lModelULoc = gl.getUniformLocation(shaderProgram, "lightModel");
+                gl.enableVertexAttribArray(vertexPositionAttrib); // input to shader from array
+                gl.enableVertexAttribArray(normAttrib);
+                // gl.enableVertexAttribArray(vertexColorAttrib);
+            } // end if no shader program link errors
+        } // end if no compile errors
+    } // end try 
+    catch (e) {
+        console.log(e);
+    } // end catch
+} // end setup shaders</code>
+                                    </pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="customtab">
+                        <button class="customtablinks defaultOp" onclick="openCity(event, 'CGSnakeDemo', 'CGSnake')">Try it yourself</button>
+                        <button class="customtablinks" onclick="openCity(event, 'CGSnakeSnip', 'CGSnake')">GLSL Shaders - JS Snippet</button>
+                    </div>
+                </div>
+                
+                <p>This recreation of the classic Snake is written entirely in WebGL. While this was also the starting point for my game logic skills, working with the shaders directly also let me understand how the hardware brings out the final outcome. Understanding how the buffers and shaders work have helped me write code better optimized for games in all my successive projects. Understanding the physics that go into lighting, reflection, shadows and color shading, and coding it from scratch let me see how to recreate real-world phenomenon in a virtual environment effectively.</p>
+            </article>
+            
+        </div>
+        <!-- Footer -->
+        <section id="footer">
+            <ul class="icons">
+                <!-- <li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li> -->
+                <!-- <li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li> -->
+                <li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+                <li><a href="#" class="icon solid fa-rss"><span class="label">RSS</span></a></li>
+                <li><a href="#" class="icon solid fa-envelope"><span class="label">Email</span></a></li>
+            </ul>
+            <p class="copyright">&copy; Arjun Madhusudan. Design: <a href="http://html5up.net">HTML5 UP</a>.
+        </section>
+    </div>
+    <!-- Scripts -->
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/browser.min.js"></script>
+    <script src="assets/js/breakpoints.min.js"></script>
+    <script src="assets/js/util.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/tabswitching.js"></script>
+    <script src="assets/js/prism.js"></script>
+    <script src="assets/js/fullscreen.js"></script>
+</body>
+</html>
