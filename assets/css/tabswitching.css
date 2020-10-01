@@ -57,6 +57,16 @@
     position:absolute;
     
 }
+
+.video-responsive video{
+    left:0;
+    top:0;
+    height:100%;
+    width:100%;
+    position:absolute;
+    
+}
+
 .code-snippet-wrapper{
   padding-bottom:56.25%;
   position:relative;
