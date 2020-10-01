@@ -126,11 +126,9 @@
     }
     `;
     try {
-        // console.log("fragment shader: "+fShaderCode);
         var fShader = gl.createShader(gl.FRAGMENT_SHADER); // create frag shader
         gl.shaderSource(fShader, fShaderCode); // attach code to shader
         gl.compileShader(fShader); // compile the code for gpu execution
-        // console.log("vertex shader: "+vShaderCode);
         var vShader = gl.createShader(gl.VERTEX_SHADER); // create vertex shader
         gl.shaderSource(vShader, vShaderCode); // attach code to shader
         gl.compileShader(vShader); // compile the code for gpu execution
@@ -165,10 +163,8 @@
                 lightColULoc = gl.getUniformLocation(shaderProgram, "lightCol");
                 eyeULoc = gl.getUniformLocation(shaderProgram, "eyePos");
                 nULoc = gl.getUniformLocation(shaderProgram, "n");
-                // lModelULoc = gl.getUniformLocation(shaderProgram, "lightModel");
                 gl.enableVertexAttribArray(vertexPositionAttrib); // input to shader from array
                 gl.enableVertexAttribArray(normAttrib);
-                // gl.enableVertexAttribArray(vertexColorAttrib);
             } // end if no shader program link errors
         } // end if no compile errors
     } // end try 
