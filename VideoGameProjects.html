@@ -68,6 +68,111 @@
                 <article class="post">
                     <header>
                         <div class="title">
+                            <h2>2D Game Engine</h2>
+                            <p>A feature-packed 2D game engine built on C++</p>
+                        </div>
+                    </header>
+                    
+                    <div class="projectdisplay" id="GameEngine">
+                        <div class="projectWrapper">
+                            
+                            <div id="GE2DPlatformer" class="customtabcontent">
+                                <div class="video-responsive">
+                                    <iframe width="560" height="315" src="https://www.youtube.com/embed/YHuh-ppGscc" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                </div>
+                            </div>
+                            <div id="GEBubbleShooter" class="customtabcontent">
+                                <div class="video-responsive">
+                                    <iframe width="560" height="315" src="https://www.youtube.com/embed/AW6wPyVuQ9s" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                </div>
+                            </div>
+                            <div id="GESpaceInvaders" class="customtabcontent">
+                                <div class="video-responsive">
+                                    <iframe width="560" height="315" src="https://www.youtube.com/embed/1OvJA_JwSrM" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                </div>
+                            </div>
+                        <div id="GEServerCode" class="customtabcontent">
+                            <div class="code-snippet-wrapper">
+                                <div class="code-snippet">
+                                    <pre data-lang="cpp">
+                                        <code class="language-cpp">#include "Engine.h"
+
+
+void initGameObjects() {
+    //This function alone lets a user create a variety of platformer games by placing platforms, moving platforms, and interactable zones that the engine offers. 
+    platforms.push_back(Platform(sf::Vector2f(0, 0), sf::Vector2f(50, 600), sf::Color(0, 255, 0), true));
+    platforms.push_back(Platform(sf::Vector2f(50, 300), sf::Vector2f(650, 50), sf::Color(255, 107, 0), true));
+    platforms.push_back(Platform(sf::Vector2f(650, 500), sf::Vector2f(350, 50), sf::Color(0, 255, 212), true));
+    platforms.push_back(Platform(sf::Vector2f(1250, 150), sf::Vector2f(150, 50), sf::Color(36, 148, 90), true));
+    platforms.push_back(Platform(sf::Vector2f(1900, 100), sf::Vector2f(50, 250), sf::Color(22, 0, 56), true));
+    platforms.push_back(Platform(sf::Vector2f(1950, 300), sf::Vector2f(250, 50), sf::Color(78, 13, 180), true));
+    platforms.push_back(Platform(sf::Vector2f(2200, 0), sf::Vector2f(50, 600), sf::Color(12, 76, 37), true));
+
+    movingplatforms.push_back(MovingPlatform(sf::Vector2f(1050, 450), sf::Vector2f(150, 50), sf::Color(255, 0, 255), 1050, 150, 1050, 500, 1500, true));
+    movingplatforms.push_back(MovingPlatform(sf::Vector2f(1450, 300), sf::Vector2f(150, 50), sf::Color(255, 0, 255), 1450, 300, 1700, 100, 1000, true));
+    movingplatforms.push_back(MovingPlatform(sf::Vector2f(200, 400), sf::Vector2f(150, 50), sf::Color(255, 0, 255), 200, 400, 900, 100, 1000, true));
+
+    //Make sure the first 3 zones are always in this order, all death zones at the end.
+    zones.push_back(Zone(Type::SPAWN, sf::Vector2f(200, 100), sf::Vector2f(50, 50), sf::Color(255, 255, 0)));
+    zones.push_back(Zone(Type::FINISH, sf::Vector2f(2050, 250), sf::Vector2f(50, 50), sf::Color(255, 165, 0)));
+    zones.push_back(Zone(Type::SCROLLRIGHT, sf::Vector2f(400, 0), sf::Vector2f(50, 600), sf::Color(128, 0, 0)));
+    zones.push_back(Zone(Type::DEATH, sf::Vector2f(50, 550), sf::Vector2f(2150, 500), sf::Color(255, 0, 0)));
+}
+
+void main() {
+
+    initGameState();
+
+    initGameObjects();
+
+    std::thread connections(&amp;NetworkServer::initGameObjects, &amp;server, std::ref(clients), std::ref(client_count), Platform::serialized, MovingPlatform::serialized, Zone::serialized, std::ref(points));
+    std::thread sendMPF(&amp;NetworkServer::sendMPF, &amp;server);
+    std::thread sendClients(&amp;NetworkServer::sendClients, &amp;server, std::ref(clients));
+    std::thread resetOffset(&amp;NetworkServer::resetOffset, &amp;server, std::ref(idToOffset));
+    std::thread recvEventList(&amp;NetworkServer::recvEventList, &amp;server, std::ref(eventQueue));
+    std::thread handleEvents(CustomEvent::handleEvents, std::ref(clients), std::ref(platforms), std::ref(movingplatforms), std::ref(eventQueue), std::ref(replays), std::ref(server.eventM), zones[0].box.getPosition().x, zones[0].box.getPosition().y, std::ref(points));
+
+    while (true)
+    {
+
+        gt.updateTimes();
+        server.m.lock();
+        Character::updateALL(gt.gameDT, clients, platforms, movingplatforms, inFocus);
+        server.m.unlock();
+        Zone::updateALL(eventQueue, clients, zones, points, offset, idToOffset, server.eventM);
+        MovingPlatform::updateALL(movingplatforms, gt.gameDT * 10);
+
+        replayDT += gt.gameDT;
+        if (replayDT > 0.033 / 4) {
+            server.eventM.lock();
+            ReplayHandler::writeALL(replays, clients, movingplatforms);
+            server.eventM.unlock();
+            replayDT -= 0.033 / 4;
+        }
+
+    }
+}</code>
+                                    </pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="customtab">
+                        <button class="customtablinks defaultOp" onclick="openCity(event, 'GE2DPlatformer', 'GameEngine')">2D Platformer</button>
+                        <button class="customtablinks" onclick="openCity(event, 'GEBubbleShooter', 'GameEngine')">Bubble Shooter</button>
+                        <button class="customtablinks" onclick="openCity(event, 'GESpaceInvaders', 'GameEngine')">Space Invaders</button>
+                        <button class="customtablinks" onclick="openCity(event, 'GEServerCode', 'GameEngine')">Platformer - C++ Snippet</button>
+                    </div>
+                </div>
+                
+                <p>This Game Engine that I worked on is the highlight of my academic career, bringing together majority of what I've learned through the last few years. My engine includes features that are often the core of any commercial engine, such as basic game objects, event management, and collision systems. This multithreaded game engine also features more such as scripting, recording and watching replays in-game, multiplayer support with a dedicated server and logically unrestrained player clients, and timeline manipulation. With the engine being a full-fledged project merging various sub-fields of computer science into one, the amount of experience I gained through this project is highly valuable.</p>
+                <p>I have linked 3 videos that showcase different games that I have built out of this engine, as well as a snippet of how efficient and detatched the server code is from the engine code. While the code isn't hosted publically anywhere yet, you can always contact me to hear more about this engine and its workings.</p>
+            </article>
+
+
+            <article class="post">
+                    <header>
+                        <div class="title">
                             <h2>Snake 2.5D</h2>
                             <p>A WebGL recreation of the classic Snake</p>
                         </div>
