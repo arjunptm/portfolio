@@ -1,0 +1,41 @@
+/* Publications page helpers */
+
+.pub-controls {
+  margin: 0 0 1.25em 0;
+}
+
+.pub-controls label {
+  display: block;
+  margin: 0 0 0.5em 0;
+}
+
+.pub-controls input[type="text"] {
+  width: 100%;
+}
+
+.pub-ol {
+  list-style: decimal;
+  margin: 0;
+  padding-left: 1.25em;
+}
+
+.pub-item {
+  margin: 0 0 1.25em 0;
+}
+
+.pub-title {
+  margin: 0 0 0.1em 0;
+}
+
+.pub-authors {
+  opacity: 0.9;
+}
+
+.pub-venue {
+  opacity: 0.75;
+  font-size: 0.95em;
+}
+
+.pub-links a {
+  border-bottom: none;
+}

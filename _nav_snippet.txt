@@ -1,0 +1,10 @@
+<ul>
+  <li class="nav-home"><a href="index.html">Home</a></li>
+  <li class="nav-research"><a href="research.html">Research</a></li>
+  <li class="nav-publications"><a href="publications.html">Publications</a></li>
+  <li class="nav-teaching"><a href="teaching.html">Teaching</a></li>
+  <li class="nav-service"><a href="service.html">Service</a></li>
+  <li class="nav-cv"><a href="cv.html">CV</a></li>
+  <li class="nav-beyond"><a href="beyond.html">Beyond Research</a></li>
+  <li class="nav-archive"><a href="archive.html">Development Archive</a></li>
+</ul>
